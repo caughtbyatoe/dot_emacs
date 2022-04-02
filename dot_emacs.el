@@ -1,73 +1,43 @@
-;
-; File:          .emacs
-; Programmer:    Brian Green
-;
+;;
+;; File:          .emacs
+;; Programmer:    Brian Green
+;;
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
+;;
+;; melpa
+;;
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;; add melpa
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;;
+;; I hate the blinking cursor!
+;;
+(blink-cursor-mode 0)
 
-;
-; Append my private lisp libraries
-;
-(setq load-path (append load-path (list "/home/brian/lisp")))
+;;
+;; who needs a menubar?
+;;
+(menu-bar-mode 0)
 
-;
-; setup ansi color for shell mode
-;
-(load-library "ansi-color")
-(autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
-(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
+;;
+;; who needs a toolbar?
+;;
+(tool-bar-mode 0)
 
-;
-; Make the system clipboard (C-c, C-v, etc.. work
-; with emacs ring-save and yank (M-w, C-y etc...)
-;
-(setq x-select-enable-clipboard t)
+;;
+;; column number mode is pretty neat
+;;
+(setq column-number-mode t)
 
-;
-; turn on line truncation for side by side windows
-;
-(setq truncate-partial-width-windows nil)
-
-;
-; only scroll one line please
-;
+;;
+;; only scroll one line please
+;;
 (setq scroll-step 1)
 
-;
-; Make Text mode the default mode for new buffers.
-;
-(setq default-major-mode 'text-mode)
-
-;
-; Always use line number mode
-;
-(line-number-mode 1)
-
-;
-; Get rid of the ctrl-m in shell buffers
-;
-(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
-
-;
-; load python mode for SConstruct and SConscript
-;
-(setq auto-mode-alist (cons '("SConstruct" . python-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("SConscript" . python-mode) auto-mode-alist))
-; python mode hook
-; no tabs
-(add-hook 'python-mode-hook (lambda()
-			      (setq indent-tabs-mode nil)))
-
-;
-; cc-mode customization
-;
+;;
+;; cc-mode customization
+;;
 (setq-default indent-tabs-mode nil)
 (defun my-c-mode-common-hook ()
   ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
@@ -80,13 +50,46 @@
   )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
-; Use Shift mouse2 to browse a url
-(global-set-key [S-mouse-2] 'browse-url-at-mouse)
+;;
+;; white on black
+;;
+(defun bj-white-on-black ()
+  (interactive)
+  (set-background-color "black")
+  (set-foreground-color "white"))
+(global-set-key [f5] 'bj-white-on-black)
+
+;;
+;; white on grey
+;;
+(defun bj-white-on-grey ()
+  (interactive)
+  (set-background-color "#222222")
+  (set-foreground-color "white"))
+(global-set-key [f6] 'bj-white-on-grey)
+
+;;
+;; black on grey
+;;
+(defun bj-black-on-grey ()
+  (interactive)
+  (set-background-color "#DDDDDD")
+  (set-foreground-color "black"))
+(global-set-key [f7] 'bj-black-on-grey)
+
+;;
+;; black on white
+;;
+(defun bj-black-on-white ()
+  (interactive)
+  (set-background-color "white")
+  (set-foreground-color "black"))
+(global-set-key [f8] 'bj-black-on-white)
 
 
-;
-; new-shell command
-;
+;;
+;; new-shell command
+;;
 (defun new-shell ()
 "This function creates shell prosess buffer by different name. 
 Created buffer names are shell-0, shell-1, shell-2 ... things. 
@@ -124,9 +127,9 @@ See also find-shell."
 	(set-buffer "*shell-keep-buffer*")
 	(rename-buffer "*shell*")))))
 
-;
-; find-shell command
-;
+;;
+;; find-shell command
+;;
 (defun find-shell (name)
 "Find shell buffer named as NAME. If there is a buffer which name is NAME,
 switch and display this NAME buffer. If there is not a buffer. This function
@@ -154,73 +157,11 @@ See also new-shell."
 		(rename-buffer "*shell*"))))))
   (new-shell)))
 
-;
-; emacs server
-;
-(server-start)
-
-;
-; I hate the blinking cursor!
-;
-(blink-cursor-mode 0)
-
-;
-; And tooltips also annoy me
-;
-(tooltip-mode 0)
-
-;
-; who needs a menubar?
-;
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-
-;
-; column number mode is pretty neat
-;
-(setq column-number-mode t)
-
-;
-; white on black
-;
-(defun bj-white-on-black ()
-  (interactive)
-  (set-background-color "black")
-  (set-foreground-color "white"))
-(global-set-key [f5] 'bj-white-on-black)
-
-;
-; white on grey
-;
-(defun bj-white-on-grey ()
-  (interactive)
-  (set-background-color "#222222")
-  (set-foreground-color "white"))
-(global-set-key [f6] 'bj-white-on-grey)
-
-;
-; black on grey
-;
-(defun bj-black-on-grey ()
-  (interactive)
-  (set-background-color "#DDDDDD")
-  (set-foreground-color "black"))
-(global-set-key [f7] 'bj-black-on-grey)
-
-;
-; black on white
-;
-(defun bj-black-on-white ()
-  (interactive)
-  (set-background-color "white")
-  (set-foreground-color "black"))
-(global-set-key [f8] 'bj-black-on-white)
-
-;
-; company
-;
-(require 'company)
-(setq company-idle-delay 0.3)
-(global-company-mode 1)
-(global-set-key (kbd "C-<tab>") 'company-complete)
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; linux specific changes
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; Make the system clipboard (C-c, C-v, etc.. work
+;; with emacs ring-save and yank (M-w, C-y etc...)
+;;
+(setq x-select-enable-clipboard t)

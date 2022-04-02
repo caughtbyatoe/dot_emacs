@@ -3,7 +3,6 @@
 ;; Programmer:    Brian Green
 ;;
 
-
 ;;
 ;; melpa
 ;;
@@ -31,15 +30,23 @@
 ;;
 (setq column-number-mode t)
 
-
 ;;
 ;; only scroll one line please
 ;;
 (setq scroll-step 1)
 
+;;
+;; cc-mode customization
+;;
+(setq-default indent-tabs-mode nil)
 (defun my-c-mode-common-hook ()
   ;; my customizations for all of c-mode, c++-mode, objc-mode, java-mode
   (setq c-basic-offset 4)
+  (setq c-echo-syntactic-information-p t)
+  (c-set-offset 'substatement-open 0)
+  (c-set-offset 'case-label 0)
+  (c-set-offset 'statement-block-intro 4)
+  (c-set-offset 'innamespace 0)
   )
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
@@ -153,20 +160,6 @@ See also new-shell."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; macos specific changes
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; copy and paste to the macos clipboard
-;;
-(defun copy-from-macos ()
-  (shell-command-to-string "pbpaste"))
-
-(defun paste-to-macos (text &optional push)
-  (let ((process-connection-type nil))
-    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-      (process-send-string proc text)
-      (process-send-eof proc))))
-
-(setq interprogram-cut-function 'paste-to-macos)
-(setq interprogram-paste-function 'copy-from-macos)
 
 ;;
 ;; emacs on macos wants to start in / for some odd reason
@@ -179,3 +172,14 @@ See also new-shell."
 ;;
 (setq visible-bell nil) ;; this is probably the default
 (setq ring-bell-function 'ignore)
+
+;;
+;; set face size to 16 pt font
+;;
+(set-face-attribute 'default nil :height 160)
+
+;;
+;; fixes message:
+;;  ls does not support --dired; see ‘dired-use-ls-dired’ for more details.
+(when (string= system-type "darwin")       
+  (setq dired-use-ls-dired nil))

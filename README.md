@@ -33,3 +33,6 @@ The tcp_server.el file adds a function `start-tcp-server` that can be used to st
 
 ### ec_tramp.sh
 This script should be used to invoke emacsclient from within tramp mode shell buffers. Setting the EDITOR environment variable (`export EDITOR=ec_tramp.sh`) is the easiest way to accomplish this.  The script may need editing so that the "server file" can be found by emacsclient.  If I'm fortunate enough to have a filesystem that is shared between the local and remote machines I usually set the server file location in tcp_server.el to match that in ec_tramp.sh.  If I'm not so lucky, then I need to copy the server file between machines.
+
+## Shell Pager
+Emacs shell buffers form a major part of my workflow.  But they don't work well at all with standard pagers such as "less" or "more".  When working in emacs, I would rather just have the pager use emacsclient.  The ec_pager.sh is a simple script that makes this happen.  Just set ec_pager.sh as $PAGER and $GIT_PAGER.
